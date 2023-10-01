@@ -1,0 +1,14 @@
+# ignore __pycache__ folder
+__pycache__
+
+# ignore node_modules folder
+node_modules
+
+# ignore .env file
+.env
+
+# ignore tmp folder
+tmp
+
+# ignore fxdata.sql file
+fxdata.sql
