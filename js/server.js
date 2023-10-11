@@ -32,17 +32,29 @@ const argv = yargs
 (async () => {
   const browserManager = new BrowserManager(argv);
   await browserManager.init();
-
-  fastify.post("/screenshot", async(request, response) => {
-    return await browserManager.screenshot();
+  fastify.get('/price', async (request, response) => {
+    return await browserManager.getCurrentPrice();
+  });
+  fastify.get('/balance', async (request, response) => {
+    return await browserManager.getCurrentBalance();
+  });
+  fastify.post("/fix", async(request, response) => {
+    return await browserManager.fix();
+  });
+  fastify.post("/notouch", async(request, response) => {
+    return await browserManager.noTouch();
   });
   fastify.post("/refresh", async(request, response) => {
     return await browserManager.init();
   });
-  //新規注文
-  fastify.post("/orders", async(request, response) => {
-    const body = request.body;
-    return await browserManager.orders(body);
+  fastify.post("/reset", async(request, response) => {
+    return await browserManager.resetBalance();
+  });
+  fastify.post("/screenshot", async(request, response) => {
+    return await browserManager.screenshot();
+  });
+  fastify.post("/touch", async(request, response) => {
+    return await browserManager.touch();
   });
   try {
     fastify.listen(argv.port);

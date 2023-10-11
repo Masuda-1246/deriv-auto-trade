@@ -44,6 +44,7 @@ module.exports = class BrowserManager {
       await this.derivSession.init();
       await this.derivSession.login();
       await this.derivSession.setup();
+      await this.derivSession.fix();
     } catch (e) {
       console.error(e);
       await this.screenshot();
@@ -57,9 +58,34 @@ module.exports = class BrowserManager {
     return {"screenshot":"Succesfully"};
   }
 
-  async orders(param) {
-    await this.derivSession.orders(param);
-    return {"orders":"Succesfully"};
+  async touch(param) {
+    const price = await this.derivSession.touch(param);
+    return {"price":price};
   }
 
+  async noTouch(param) {
+    const price = await this.derivSession.noTouch(param);
+    return {"price":price};
+  }
+
+  async getCurrentPrice() {
+    const price = await this.derivSession.getCurrentPrice();
+    return {"price":price};
+  }
+
+  async getCurrentBalance() {
+    const balance = await this.derivSession.getCurrentBalance();
+    return {"balance":balance};
+  }
+
+  async resetBalance() {
+    await this.derivSession.resetBalance();
+    return {"balance":"Succesfully"};
+  }
+
+  async fix(param) {
+    await this.derivSession.fix(param);
+    await this.derivSession.screenshot("fix-deriv");
+    return {"fix":"Succesfully"};
+  }
 }

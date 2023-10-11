@@ -34,6 +34,7 @@ class PricePredictionEnv(gym.Env):
     def step(self, action):
         # 行動の実行
         assert self.action_space.contains(action)
+        self.current_price = self.data.iloc[self.current_step]['price']
 
         # 新しい価格を計算
         self.current_step += 1
@@ -41,22 +42,22 @@ class PricePredictionEnv(gym.Env):
         self.price_memory.append(self.current_price)
         reward = 0
         if len(self.action_memory) == 120:
-            reward_price = self.price_memory.pop(0)
-            self.action_memory.pop(0)
-            reward_action = self.action_memory[0]
+            self.price_memory.pop(0)
+            reward_price = self.price_memory[0]
+            reward_action = self.action_memory.pop(0)
             max_price = max(self.price_memory)
             if reward_action == 0:
-                if max_price >= reward_price + self.target_price:
+                if max_price >= reward_price + 150:
                     reward = 2
                 else:
-                    reward = -7
+                    reward = -1
             elif reward_action == 1:
-                if max_price < reward_price + self.target_price:
-                    reward = 5
+                if max_price < reward_price + 100:
+                    reward = 3
                 else:
-                    reward = -30
+                    reward = -3
             elif reward_action == 2:
-                reward = 0.5
+                reward = 0.3
 
         # ゲーム終了の条件を判定
         done = self.current_step >= len(self.data) - 1
