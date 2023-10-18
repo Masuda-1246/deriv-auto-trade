@@ -54,9 +54,9 @@ class PricePredictionEnv(gym.Env):
         self.price_memory.append(self.current_price)
         reward = 0
         if len(self.action_memory) == 120:
-            reward_price = self.price_memory.pop(0)
-            self.action_memory.pop(0)
-            reward_action = self.action_memory[0]
+            self.price_memory.pop(0)
+            reward_price = self.price_memory[0]
+            reward_action = self.action_memory.pop(0)
             max_price = max(self.price_memory)
             if reward_action == 0:
                 self.buyRise_num +=1
@@ -91,7 +91,6 @@ class PricePredictionEnv(gym.Env):
             print(self.current_step)
             print(f'上がるを買った回数：{self.buyRise_num}, 上がるで勝利した回数：{self.buyRise_win}, 上がるを選んだ時の勝率：{self.buyRise_win/(self.buyRise_num+0.1)}')
             # print(f'下がるを買った回数：{self.buyUnder_num}, 下がるで勝利した回数：{self.buyUnder_win}, 下がるを選んだ時の勝率：{self.buyUnder_win/(self.buyUnder_num+1)}')
-            print(self.price_memory)
 
         return new_observation, reward, done, {}
 
